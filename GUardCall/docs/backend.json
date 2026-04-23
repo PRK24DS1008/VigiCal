@@ -1,0 +1,61 @@
+
+{
+  "entities": {
+    "Meeting": {
+      "title": "Meeting",
+      "description": "A secure video conferencing session.",
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the meeting was created."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Whether the meeting is currently active."
+        },
+        "invites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of invited email addresses."
+        },
+        "endedAt": {
+          "type": "number",
+          "description": "Timestamp when the meeting ended."
+        }
+      },
+      "required": ["createdAt", "isActive"]
+    },
+    "Participant": {
+      "title": "Participant",
+      "description": "A participant in a meeting.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID for the participant." },
+        "name": { "type": "string", "description": "Display name." },
+        "isHost": { "type": "boolean", "description": "Whether the participant is the host." },
+        "joinedAt": { "type": "number", "description": "Join timestamp." },
+        "videoOn": { "type": "boolean", "description": "Camera status." },
+        "audioOn": { "type": "boolean", "description": "Microphone status." },
+        "aiScore": { "type": "number", "description": "Deepfake risk score." },
+        "status": { "type": "string", "enum": ["Human", "AI", "Suspicious"], "description": "Detected status." },
+        "lastAnalysis": { "type": "number", "description": "Last time AI analysis was performed." }
+      },
+      "required": ["id", "name", "isHost", "joinedAt"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com"]
+  },
+  "firestore": {
+    "/meetings/{meetingId}": {
+      "schema": "Meeting",
+      "description": "The root meeting document."
+    },
+    "/meetings/{meetingId}/participants/{participantId}": {
+      "schema": "Participant",
+      "description": "A participant in the specific meeting."
+    }
+  }
+}
